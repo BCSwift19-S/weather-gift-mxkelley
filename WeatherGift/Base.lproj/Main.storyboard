@@ -114,7 +114,11 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="U10-xQ-phy"/>
-                                    <barButtonItem systemItem="add" id="Aup-Eg-3bL"/>
+                                    <barButtonItem systemItem="add" id="Aup-Eg-3bL">
+                                        <connections>
+                                            <action selector="addBarButtonPressed:" destination="LvU-Uj-HXO" id="T8I-vp-cpS"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                         </subviews>
