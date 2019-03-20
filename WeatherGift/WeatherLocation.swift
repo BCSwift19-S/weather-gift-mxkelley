@@ -11,6 +11,16 @@ import Alamofire
 import SwiftyJSON
 
 class WeatherLocation {
+    
+    struct DailyForecast {
+        var dailyMaxTemp: Double
+        var dailyMinTemp: Double
+        var dailyDate: Double
+        var dailySummary: String
+        var dailyIcon: String
+    }
+    
+    
     var name = ""
     var coordinates = ""
     var currentTemp = "--"
@@ -18,6 +28,7 @@ class WeatherLocation {
     var currentIcon = ""
     var currentTime = 0.0
     var timeZone = ""
+    var dailyForecastArray = [DailyForecast]()
     
     func getWeather(completed: @escaping () -> ()) {
         
@@ -56,6 +67,19 @@ class WeatherLocation {
                 if let time = json["currently"]["time"].double {
 //                    print("TIME for \(self.name) is \(time)")
                     self.currentTime = time
+                }
+                let dailyDataArray = json["daily"]["data"]
+//                print("**** The dailyData array is: \(dailyDataArray)")
+                self.dailyForecastArray = []
+                for day in 1...dailyDataArray.count-1 {
+                    let maxTemp = json["daily"]["data"][day]["temperatureHigh"].doubleValue
+                    let minTemp = json["daily"]["data"][day]["temperatureLow"].doubleValue
+                    let dateValue = json["daily"]["data"][day]["time"].doubleValue
+                    let icon = json["daily"]["data"][day]["icon"].stringValue
+                    let dailySummary = json["daily"]["data"][day]["summary"].stringValue
+                    let newDailyForecast = DailyForecast(dailyMaxTemp: maxTemp, dailyMinTemp: minTemp, dailyDate: dateValue, dailySummary: dailySummary, dailyIcon: icon)
+                    self.dailyForecastArray.append(newDailyForecast)
+//                    print("***** newDailyForecast = \(newDailyForecast)")
                 }
             case .failure(let error):
                 print(error)
